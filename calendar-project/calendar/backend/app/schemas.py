@@ -1,7 +1,6 @@
-# calendar/backend/app/schemas.py
-
 from pydantic import BaseModel
 from typing import List, Optional
+
 
 class BookingCreate(BaseModel):
     """
@@ -9,6 +8,7 @@ class BookingCreate(BaseModel):
     """
     date: str  # формат: "YYYY-MM-DD"
     time_slot: str  # например: "09:00"
+
 
 class BookingOut(BaseModel):
     """
@@ -21,4 +21,5 @@ class BookingOut(BaseModel):
     confirmed: bool
 
     class Config:
-        from_attributes = True  # для совместимости с SQLAlchemy (вместо orm_mode)
+        # для совместимости с SQLAlchemy (вместо orm_mode)
+        from_attributes = True
