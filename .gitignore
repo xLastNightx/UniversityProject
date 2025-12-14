@@ -1,0 +1,95 @@
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ===========================
+# Virtual Environments
+# ===========================
+venv/
+ENV/
+env/
+.env 
+.venv/
+
+# ===========================
+# IDE / Editors
+# ===========================
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ===========================
+# OS
+# ===========================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.tmp
+*.swp
+
+# macOS
+.DS_Store
+
+# ===========================
+# Logs and Databases
+# ===========================
+*.log
+sqlite.db
+*.sqlite
+*.sqlite3
+# Наша БД — не коммитим!
+calendar/backend/app/database.db
+
+# ===========================
+# Docker
+# ===========================
+.dockerignore
+
+# ===========================
+# Secrets and Credentials
+# ===========================
+.env
+.env.local
+.env.*.local
+
+# ===========================
+# Build artifacts
+# ===========================
+.coverage
+.htmlcov/
+.pytest_cache/
+.coverage.*
