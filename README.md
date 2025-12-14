@@ -35,3 +35,5 @@
             ├── create_booking.html
             └── email_confirmation.html
 </code></pre>
+
+Чтобы запустить проект, надо: uvicorn calendar.backend.app.main:app -- reload
