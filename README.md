@@ -1,6 +1,6 @@
 # Стурктура проекта:
 
-calendar-project/
+<pre><code>calendar-project/
 ├── README.md
 ├── requirements.txt
 ├── docker-compose.yml
@@ -34,3 +34,4 @@ calendar-project/
             ├── bookings.html
             ├── create_booking.html
             └── email_confirmation.html
+</code></pre>
