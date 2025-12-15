@@ -1,0 +1,105 @@
+:root {
+    --booking-bg: #f8f9fa;
+    --slot-hover: #e9ecef;
+    --confirmed-color: #28a745;
+    --alert-color: #ffc107;
+}
+
+body {
+    background-color: #fafafa;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Основной контейнер */
+.main-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+/* Карточка бронирования */
+.booking-card {
+    border-left: 4px solid var(--confirmed-color);
+    background-color: var(--booking-bg);
+    margin-bottom: 12px;
+    border-radius: 6px;
+    padding: 12px;
+    transition: background-color 0.2s;
+}
+
+.booking-card:hover {
+    background-color: var(--slot-hover);
+}
+
+.booking-info {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.booking-time {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Кнопки */
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* Форма создания */
+.booking-form-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* Алерт "приходите заранее" */
+.alert-info {
+    border-left: 4px solid var(--alert-color);
+    background-color: #fff8e1;
+    color: #5f5f5f;
+}
+
+/* Слоты времени*/
+.time-slot {
+    cursor: pointer;
+    padding: 8px 12px;
+    margin: 4px 0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.time-slot:hover {
+    background-color: var(--slot-hover);
+}
+
+.time-slot.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f1f1f1;
+}
+
+/* Поиск */
+.search-box {
+    margin: 16px 0;
+}
+
+/* Footer */
+.footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
