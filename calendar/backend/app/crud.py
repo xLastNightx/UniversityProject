@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+﻿from sqlalchemy.orm import Session
 from . import models, schemas
 
 
@@ -7,8 +7,11 @@ def get_user_by_email(db: Session, email: str):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(email=user.email, name=user.name,
-                          google_sub=user.google_sub)
+    db_user = models.User(
+        email=user.email, 
+        name=user.name,
+        google_sub=user.google_sub if user.google_sub else ""
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -29,7 +32,9 @@ def create_booking(db: Session, booking: schemas.BookingCreate, user_email: str)
 
 
 def get_bookings_by_user(db: Session, email: str, skip: int = 0, limit: int = 10):
-    return db.query(models.Booking).filter(models.Booking.user_email == email).offset(skip).limit(limit).all()
+    return db.query(models.Booking).filter(
+        models.Booking.user_email == email
+    ).offset(skip).limit(limit).all()
 
 
 def get_booking_by_id(db: Session, booking_id: int):

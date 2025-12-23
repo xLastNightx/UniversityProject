@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Мои бронирования</h2>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <p class="mb-0">Привет, {{ email }}!</p>
+        </div>
+        <div>
+            <a href="/bookings/create" class="btn btn-primary me-2">Забронировать встречу</a>
+            <a href="/auth/change-password" class="btn btn-outline-secondary me-2">Сменить пароль</a>
+            <a href="/auth/logout" class="btn btn-outline-danger">Выйти</a>
+        </div>
+    </div>
+
+    <!-- Поиск -->
+    <form method="get" action="/bookings/search" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" placeholder="Поиск по дате или времени" 
+                   class="form-control" value="{{ request.query_params.get('q', '') }}">
+            <button type="submit" class="btn btn-secondary">Найти</button>
+        </div>
+    </form>
+
+    <!-- Бронирования -->
+    {% if bookings %}
+        {% for booking in bookings %}
+        <div class="card mb-3">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title mb-1">{{ booking.date }} в {{ booking.time_slot }}</h5>
+                    <p class="card-text mb-0">
+                        <small class="text-muted">
+                            {% if booking.confirmed %}
+                            <span class="badge bg-success">Подтверждено</span>
+                            {% else %}
+                            <span class="badge bg-warning">Ожидание</span>
+                            {% endif %}
+                        </small>
+                    </p>
+                </div>
+                <div>
+                    <a href="/bookings/delete/{{ booking.id }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Вы уверены, что хотите отменить бронирование?')">
+                        Отменить
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Пагинация -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page-1 }}&limit={{ limit }}">Назад</a>
+                </li>
+                {% endif %}
+                
+                {% for p in range(1, total_pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="?page={{ p }}&limit={{ limit }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                
+                {% if page < total_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page+1 }}&limit={{ limit }}">Вперед</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            У вас пока нет бронирований.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
