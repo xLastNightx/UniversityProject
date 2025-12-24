@@ -23,9 +23,9 @@ UniversityProject/
     │   |    ├── crud.py
     │   |    ├── email_utils.py
     │   |    └── routers/
-    │   |        ├── bookings.py
+    │   |        ├── bookings.py 
     |   |        ├── __init__.py
-    │   |        └── auth.py
+    │   |        └── auth.py  
     |   └── tests/
     │       ├── __init__.py
     │       └── test_auth.py
