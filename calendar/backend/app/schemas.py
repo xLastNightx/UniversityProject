@@ -3,7 +3,6 @@ from typing import Optional
 
 
 class UserCreate(BaseModel):
-    """РЎС…РµРјР° РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"""
     email: EmailStr
     name: str
     password: str
@@ -11,7 +10,6 @@ class UserCreate(BaseModel):
 
 
 class UserOut(BaseModel):
-    """РЎС…РµРјР° РґР»СЏ РІС‹РІРѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ"""
     email: str
     name: str
 
@@ -20,17 +18,11 @@ class UserOut(BaseModel):
 
 
 class BookingCreate(BaseModel):
-    """
-    РЎС…РµРјР° РґР»СЏ СЃРѕР·РґР°РЅРёСЏ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ (РІС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ РѕС‚ С„РѕСЂРјС‹)
-    """
-    date: str  # С„РѕСЂРјР°С‚: "YYYY-MM-DD"
-    time_slot: str  # РЅР°РїСЂРёРјРµСЂ: "09:00"
+    date: str  # "YYYY-MM-DD"
+    time_slot: str  #" 09:00"
 
 
 class BookingOut(BaseModel):
-    """
-    РЎС…РµРјР° РґР»СЏ РІС‹РІРѕРґР° Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ (РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РІ API РёР»Рё С€Р°Р±Р»РѕРЅРµ)
-    """
     id: int
     user_email: str
     date: str

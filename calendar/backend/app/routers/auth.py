@@ -112,8 +112,8 @@ async def reset_password_request(
     if reset_code:
         # Выводим код в консоль для тестирования
         print(f"\n{'='*60}")
-        print(f"🔐 RESET PASSWORD CODE FOR: {email}")
-        print(f"✅ CODE: {reset_code}")
+        print(f"RESET PASSWORD CODE FOR: {email}")
+        print(f"CODE: {reset_code}")
         print(f"{'='*60}\n")
         
         # Отправка email с кодом (в тестовом режиме только вывод в консоль)
