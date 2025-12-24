@@ -1,0 +1,11 @@
+﻿services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./calendar/frontend:/app/frontend
+      - ./users.json:/app/users.json
+      - ./database.db:/app/database.db
+    environment:
+      - PYTHONPATH=/app

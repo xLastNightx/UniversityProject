@@ -1,27 +1,29 @@
 # Стурктура проекта:
 
-<pre><code>calendar-project/
-├── README.md
-├── requirements.txt
-├── docker-compose.yml
+<pre><code>
+UniversityProject/
 ├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .gitignore
+├── REAADME.md
 └── calendar/
     ├── backend/
     │   ├── app/
-    │   │   ├── __init__.py
-    │   │   ├── main.py
-    │   │   ├── models.py
-    │   │   ├── schemas.py
-    │   │   ├── database.py
-    │   │   ├── auth.py
-    │   │   ├── crud.py
-    │   │   ├── email_utils.py
-    │   │   └── routers/
-    │   │       ├── bookings.py
-    │   │       └── auth.py
-    │   └── tests/
+    │   |    ├── main.py
+    │   |    ├── models.py
+    │   |    ├── schemas.py
+    │   |    ├── database.py
+    │   |    ├── auth_utils.py
+    │   |    ├── crud.py
+    │   |    ├── email_utils.py
+    │   |    └── routers/
+    │   |        ├── bookings.py
+    |   |        ├── __init.py__
+    │   |        └── auth.py
+    |   └── tests/
     │       ├── __init__.py
-    │       └── test_bookings.py
+    │       └── test_auth.py
     └── frontend/
         ├── static/
         │   ├── css/
@@ -31,7 +33,10 @@
         └── templates/
             ├── base.html
             ├── login.html
+            ├── register.html
             ├── bookings.html
+            ├── change_password.html
+            ├── reset_password.html
             └── create_booking.html
 </code></pre>
 
