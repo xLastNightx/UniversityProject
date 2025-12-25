@@ -6,6 +6,6 @@
     volumes:
       - ./calendar/frontend:/app/frontend
       - ./users.json:/app/users.json
-      - ./database.db:/app/database.db
+      - ./database.db:/app/database.db  # Важно: монтирование файла
     environment:
       - PYTHONPATH=/app

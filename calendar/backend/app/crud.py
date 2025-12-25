@@ -49,6 +49,18 @@ def delete_booking(db: Session, booking_id: int):
         return True
     return False
 
-
 def get_all_bookings_on_date(db: Session, date: str):
-    return db.query(models.Booking).filter(models.Booking.date == date).all()
+    """Получает ВСЕ бронирования на конкретную дату"""
+    return db.query(models.Booking).filter(
+        models.Booking.date == date  # Важно: фильтруем по конкретной дате
+    ).all()
+
+def update_booking(db: Session, booking_id: int, booking_update: schemas.BookingUpdate):
+    """Обновление бронирования"""
+    booking = get_booking_by_id(db, booking_id)
+    if booking:
+        booking.date = booking_update.date
+        booking.time_slot = booking_update.time_slot
+        db.commit()
+        db.refresh(booking)
+    return booking

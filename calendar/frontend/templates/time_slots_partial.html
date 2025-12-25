@@ -1,0 +1,25 @@
+<div class="mb-3">
+    <label class="form-label">Время</label>
+    {% if time_slots %}
+    <div class="list-group">
+        {% for slot in time_slots %}
+        <label class="list-group-item list-group-item-action 
+                     {% if slot.disabled %}list-group-item-danger disabled{% endif %}">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" 
+                       name="time_slot" value="{{ slot.value }}" 
+                       required {% if slot.disabled %}disabled{% endif %}>
+                <span class="form-check-label">
+                    {{ slot.label }}
+                    {% if slot.disabled %}
+                    <span class="badge bg-danger float-end">Занято</span>
+                    {% endif %}
+                </span>
+            </div>
+        </label>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">Выберите дату для отображения доступного времени</p>
+    {% endif %}
+</div>

@@ -1,83 +1,197 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h2 class="mb-4">Мои бронирования</h2>
+    <h2 class="mb-4"><i class="bi bi-calendar-check"></i> Мои записи на маникюр</h2>
     
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <p class="mb-0">Привет, {{ email }}!</p>
+            <small class="text-muted"><i class="bi bi-clock"></i> Длительность процедуры: 2 часа</small>
         </div>
         <div>
-            <a href="/bookings/create" class="btn btn-primary me-2">Забронировать встречу</a>
-            <a href="/auth/change-password" class="btn btn-outline-secondary me-2">Сменить пароль</a>
-            <a href="/auth/logout" class="btn btn-outline-danger">Выйти</a>
+            <a href="/bookings/create" class="btn btn-primary me-2">
+                <i class="bi bi-plus-circle"></i> Новая запись
+            </a>
+            <a href="/bookings/calendar" class="btn btn-outline-primary me-2">
+                <i class="bi bi-calendar-week"></i> Календарь
+            </a>
+            <a href="/auth/change-password" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-key"></i> Пароль
+            </a>
+            <a href="/auth/logout" class="btn btn-outline-danger">
+                <i class="bi bi-box-arrow-right"></i> Выйти
+            </a>
         </div>
     </div>
 
     <!-- Поиск -->
-    <form method="get" action="/bookings/search" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="q" placeholder="Поиск по дате или времени" 
-                   class="form-control" value="{{ request.query_params.get('q', '') }}">
-            <button type="submit" class="btn btn-secondary">Найти</button>
-        </div>
-    </form>
-
-    <!-- Бронирования -->
-    {% if bookings %}
-        {% for booking in bookings %}
-        <div class="card mb-3">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="card-title mb-1">{{ booking.date }} в {{ booking.time_slot }}</h5>
-                    <p class="card-text mb-0">
-                        <small class="text-muted">
-                            {% if booking.confirmed %}
-                            <span class="badge bg-success">Подтверждено</span>
-                            {% else %}
-                            <span class="badge bg-warning">Ожидание</span>
-                            {% endif %}
-                        </small>
-                    </p>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="/bookings/search" class="row g-3">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" name="q" placeholder="Поиск по дате или времени..." 
+                               class="form-control" value="{{ search_query or '' }}">
+                        <button type="submit" class="btn btn-primary">Найти</button>
+                    </div>
                 </div>
-                <div>
-                    <a href="/bookings/delete/{{ booking.id }}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Вы уверены, что хотите отменить бронирование?')">
-                        Отменить
-                    </a>
+            </form>
+        </div>
+    </div>
+
+    {% if bookings %}
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card bg-light">
+                <div class="card-body text-center py-2">
+                    <h5 class="card-title mb-0">{{ total_bookings }} записей</h5>
                 </div>
             </div>
         </div>
-        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Бронирования -->
+    {% if bookings %}
+        <div class="list-group">
+            {% for booking in bookings %}
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <div class="me-3">
+                        <div class="d-flex align-items-center mb-1">
+                            <i class="bi bi-scissors text-primary me-2"></i>
+                            <h5 class="mb-0">{{ booking.date }} в {{ booking.time_slot }}</h5>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <small class="text-muted me-3">
+                                <i class="bi bi-clock"></i> {{ booking.time_slot }}–{{ booking.end_time }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <a href="/bookings/edit/{{ booking.id }}" class="btn btn-warning btn-sm me-1">
+                            <i class="bi bi-pencil"></i> Изменить время
+                        </a>
+                        <a href="/bookings/delete/{{ booking.id }}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Вы уверены, что хотите отменить запись на маникюр?')">
+                            <i class="bi bi-trash"></i> Отменить
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
         <!-- Пагинация -->
         {% if total_pages > 1 %}
-        <nav aria-label="Page navigation" class="mt-4">
+        <nav aria-label="Навигация по страницам" class="mt-4">
             <ul class="pagination justify-content-center">
                 {% if page > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page-1 }}&limit={{ limit }}">Назад</a>
+                    <a class="page-link" href="?page={{ page-1 }}&limit={{ limit }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                        <i class="bi bi-chevron-left"></i> Назад
+                    </a>
                 </li>
                 {% endif %}
                 
                 {% for p in range(1, total_pages + 1) %}
-                <li class="page-item {% if p == page %}active{% endif %}">
-                    <a class="page-link" href="?page={{ p }}&limit={{ limit }}">{{ p }}</a>
-                </li>
+                    {% if p == 1 or p == total_pages or (p >= page-2 and p <= page+2) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ p }}&limit={{ limit }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                            {{ p }}
+                        </a>
+                    </li>
+                    {% elif p == page-3 or p == page+3 %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
                 {% endfor %}
                 
                 {% if page < total_pages %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page+1 }}&limit={{ limit }}">Вперед</a>
+                    <a class="page-link" href="?page={{ page+1 }}&limit={{ limit }}{% if search_query %}&q={{ search_query }}{% endif %}">
+                        Вперед <i class="bi bi-chevron-right"></i>
+                    </a>
                 </li>
                 {% endif %}
             </ul>
         </nav>
         {% endif %}
     {% else %}
-        <div class="alert alert-info">
-            У вас пока нет бронирований.
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-calendar-x display-1 text-muted mb-3"></i>
+                <h4 class="text-muted">У вас пока нет записей на маникюр</h4>
+                <p class="text-muted mb-4">Запишитесь на удобное время прямо сейчас!</p>
+                <a href="/bookings/create" class="btn btn-primary btn-lg">
+                    <i class="bi bi-plus-circle"></i> Записаться на маникюр
+                </a>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle"></i> Рабочие часы: 9:00–17:00. Длительность: 2 часа
+                    </small>
+                </div>
+            </div>
         </div>
     {% endif %}
+    
+    <!-- Предстоящие записи (если есть) -->
+    {% if upcoming_bookings %}
+    <div class="mt-5">
+        <h5><i class="bi bi-alarm"></i> Ближайшие записи</h5>
+        <div class="row">
+            {% for booking in upcoming_bookings %}
+            <div class="col-md-4 mb-3">
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ booking.date }}</h6>
+                        <p class="card-text">
+                            <i class="bi bi-clock"></i> {{ booking.time_slot }}–{{ booking.end_time }}
+                        </p>
+                        {% if booking.days_until == 0 %}
+                        <span class="badge bg-danger">Сегодня!</span>
+                        {% elif booking.days_until == 1 %}
+                        <span class="badge bg-warning">Завтра</span>
+                        {% elif booking.days_until <= 3 %}
+                        <span class="badge bg-info">Через {{ booking.days_until }} дня</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<!-- Стили для улучшенного вида -->
+<style>
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-1px);
+        transition: all 0.2s;
+    }
+    .list-group-item {
+        border-left: 4px solid #0d6efd;
+        margin-bottom: 8px;
+        border-radius: 8px !important;
+    }
+    .list-group-item.list-group-item-action:focus, 
+    .list-group-item.list-group-item-action:hover {
+        border-left-color: #dc3545;
+    }
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .badge {
+        font-size: 0.8em;
+        padding: 4px 8px;
+    }
+</style>
 {% endblock %}

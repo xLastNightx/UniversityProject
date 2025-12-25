@@ -31,3 +31,8 @@ class BookingOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+class BookingUpdate(BaseModel):
+    """Схема для обновления бронирования"""
+    date: str
+    time_slot: str

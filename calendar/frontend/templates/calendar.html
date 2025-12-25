@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4"><i class="bi bi-calendar-month"></i> Календарь записей</h2>
+    
+    <!-- Навигация по месяцам -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-0">{{ month_name }} {{ year }}</h3>
+                </div>
+                <div class="btn-group">
+                    <a href="/bookings/calendar?year={{ prev_year }}&month={{ prev_month }}" 
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-chevron-left"></i> Предыдущий
+                    </a>
+                    <a href="/bookings/calendar?year={{ next_year }}&month={{ next_month }}" 
+                       class="btn btn-outline-secondary">
+                        Следующий <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Календарь -->
+    <div class="card">
+        <div class="card-body p-0">
+            <!-- Дни недели -->
+            <div class="row g-0 text-center fw-bold border-bottom">
+                {% for day_name in ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] %}
+                <div class="col p-2 border-end {% if loop.last %}border-end-0{% endif %} bg-light">
+                    {{ day_name }}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Дни месяца -->
+            {% for week in calendar %}
+            <div class="row g-0 border-bottom {% if loop.last %}border-bottom-0{% endif %}">
+                {% for day_item in week %}
+                <div class="col border-end 
+                            {% if loop.last %}border-end-0{% endif %} 
+                            {% if day_item.day is none %}bg-light text-muted{% endif %}"
+                     style="min-height: 120px; position: relative;">
+                    
+                    {% if day_item.day is not none %}
+                    <div class="p-2 h-100 d-flex flex-column">
+                        <!-- Номер дня -->
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <span class="{% if day_item.is_today %}badge bg-primary rounded-pill px-2{% else %}fw-medium{% endif %}">
+                                {{ day_item.day }}
+                                {% if day_item.is_today %}
+                                <span class="visually-hidden">Сегодня</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        
+                        <!-- Бронирования -->
+                        {% if day_item.bookings %}
+                        <div class="mt-auto">
+                            {% for booking in day_item.bookings %}
+                                {% if loop.index <= 3 %}
+                                <div class="small p-1 mb-1 rounded 
+                                            {% if booking.user_email == email %}bg-info text-white{% else %}bg-light text-dark{% endif %}">
+                                    <i class="bi bi-clock"></i> {{ booking.time_slot }}
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if day_item.bookings|length > 3 %}
+                            <div class="small text-muted text-center">
+                                +{{ day_item.bookings|length - 3 }} ещё
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Кнопка записи -->
+                        {% if day_item.month == current_month %}
+                        <div class="mt-2">
+                            <a href="/bookings/create?date={{ year }}-{{ '%02d' % month }}-{{ '%02d' % day_item.day }}" 
+                               class="btn btn-sm btn-outline-primary w-100 py-1">
+                                <i class="bi bi-plus"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Легенда -->
+    <div class="mt-4">
+        <h5><i class="bi bi-info-circle"></i> Обозначения:</h5>
+        <div class="row">
+            <div class="col-auto">
+                <span class="badge bg-primary">Сегодня</span>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex align-items-center">
+                    <div class="bg-info me-2 p-1 rounded" style="width: 16px; height: 16px;"></div>
+                    <span>Ваши записи</span>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex align-items-center">
+                    <div class="bg-light border me-2 p-1 rounded" style="width: 16px; height: 16px;"></div>
+                    <span>Чужие записи</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Быстрый переход -->
+    <div class="mt-4 text-center">
+        <a href="/bookings/create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Новая запись
+        </a>
+        <a href="/bookings/" class="btn btn-outline-secondary ms-2">
+            <i class="bi bi-list"></i> Мои записи
+        </a>
+    </div>
+</div>
+
+<style>
+    .col {
+        min-height: 120px;
+    }
+    
+    .border-end:last-child {
+        border-right: none !important;
+    }
+    
+    .border-bottom:last-child {
+        border-bottom: none !important;
+    }
+    
+    .col {
+        flex: 1 0 14.28%;
+        max-width: 14.28%;
+    }
+    
+    @media (max-width: 768px) {
+        .col {
+            min-height: 100px;
+        }
+        
+        .btn-group .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    }
+</style>
+{% endblock %}
