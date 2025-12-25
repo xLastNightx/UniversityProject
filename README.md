@@ -42,6 +42,8 @@ UniversityProject/
             ├── bookings.html
             ├── change_password.html
             ├── reset_password.html
+            ├── edit_booking.html
+            ├── time_slots_partial.html
             └── create_booking.html
 </code></pre>
 
